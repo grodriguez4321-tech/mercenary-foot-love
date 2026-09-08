@@ -7,6 +7,7 @@ class Merc:
 		self.archetype = archetype
 		self.background = background
 		self.age = age
+		self.attributes = attributes
 		self.characteristics = characteristics
 		self.skills = skills
 		self.inventory = []
