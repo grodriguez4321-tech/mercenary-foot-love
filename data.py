@@ -92,7 +92,34 @@ clever = Ancestry(
 	ancestries["clever"]["size"],
 	ancestries["clever"]["attributes"],
 )
-print (clever)
+
+driven = Ancestry(
+	"Driven",
+	ancestries["driven"]["size"],
+	ancestries["driven"]["attributes"],
+)
+
+keen = Ancestry(
+	"Keen",
+	ancestries["keen"]["size"],
+	ancestries["keen"]["attributes"]
+)
+
+mighty = Ancestry(
+	"Mighty",
+	ancestries["mighty"]["size"],
+	ancestries["mighty"]["attributes"]
+)
+
+strange = Ancestry(
+	"Strange",
+	ancestries["strange"]["size"],
+	ancestries["strange"]["attributes"]
+)
+
+ancestry_objs = [clever, driven, keen, mighty, strange]
+for ancestry in ancestry_objs:
+	print(ancestry)
 def roll_ancestry():
 	roll = random.randint(1, 10)
 	if roll ==1 or roll ==2:
@@ -107,32 +134,104 @@ def roll_ancestry():
 		chosen_ancestry = ancestries["strange"]
 	print(f"You rolled {chosen_ancestry['name']}!")
 	return chosen_ancestry
-rolled_ancestry = roll_ancestry()
+#rolled_ancestry = roll_ancestry()
 #initiative = prowess + intelligence
-#luck = ['D4', 'D6', 'D8', 'D10', 'D12']
-#skills
-'''General Skills
-Acrobatics (VIG))
-Awareness (INT)
-Determination (COM)
-Physique (VIG)
-Skullduggery (VIG)
-Steering (VIG)
-Intellect Skills
-Barber-Surgery (INT)
-Comprehension (INT)
-Survival (INT)
-Tinkering (INT)
-Social Skills
-Haggle (COM)
-Insight (COM)
-Presence (COM)
-Performance (COM)
-Combat Skills
-Brawl (VIG) 
-Dual (PRO)
-One-Handed (PRO)  
-Ranged (PRO) 
-Shielded (PRO) 
-Two-Handed (PRO)
-'''
+luck = {
+	"D4": 12,
+	"D6": 10,
+	"D8": 8,
+	"D10": 6,
+	"D12": 4
+}
+
+skills = {
+        "general_skills" : {
+		    "acrobatics" : {
+			    "attribute" : "vig",
+			    "rank" : 0,
+            },
+                   "awareness" : {
+		        "attribute": "INT",
+			    "rank" : 0,
+            },
+		    "determination" : {
+                           "attribute": "COM",
+			    "rank" :0,
+            },
+            "physique" : {
+			    "attribute": "VIG",
+			    "rank": 0,
+            },
+
+            "skullduggery": {
+                           "attribute": "VIG",
+			    "rank": 0,
+            },
+                "steering": {
+                    "attribute": "VIG",
+                    "rank": 0
+            },
+        },
+		"Intellect Skills": {
+            "Barber-Surgery": {
+				"attribute" : "INT",
+				"rank": 0
+            },
+			"Comprehension": {
+				"attribute": "INT",
+				"rank": 0,
+			},
+			"Survival": {
+				"attribute": "INT",
+                "rank": 0,
+            },
+            "Tinkering": {
+				"attribute": "INT",
+                "rank": 0
+			},
+		},
+        "Social Skills": {
+			"Haggle": {
+				"attribute": "COM",
+				"rank": 0
+            },
+			"Insight": {
+				"attribute": "COM",
+                "rank": 0
+            },
+			"Presence": {
+                "attribute": "COM",
+                "rank": 0
+            },
+			"Performance": {
+                "attribute": "COM",
+                "rank": 0
+            },
+        },
+        "Combat Skills": {
+			"Brawl": {
+                "attribute": "VIG",
+                "rank": 0
+            },
+			"Dual": {
+                "attribute": "PRO",
+                "rank": 0
+            },
+			"One-Handed": {
+                "attribute": "PRO",
+                "rank": 0
+            },
+			"Ranged": {
+                "attribute": "PRO",
+                "rank": 0
+            },
+			"Shielded": {
+                "attribute": "PRO",
+                "rank": 0
+            },
+            "Two-Handed": {
+                "attribute": "PRO",
+                "rank": 0
+            }
+        },
+}
