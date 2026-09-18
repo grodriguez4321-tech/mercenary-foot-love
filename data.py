@@ -1,4 +1,5 @@
 import random
+from random import choice
 
 
 class Characteristics:
@@ -97,14 +98,256 @@ ancestries = {
 }
 
 class Background:
-    def __init__(self, name: str, skill_improvements: list = None, arsenal: list = None, downtime_activity: str = ""):
+    def __init__(
+        self,
+        name: str,
+        skill_improvements: dict = None,
+        arsenal: list = None,
+        downtime_activity: str = "",
+    ):
         self.name = name
-        self.skill_improvements = skill_improvements if skill_improvements is not None else []
+        self.skill_improvements = skill_improvements or {
+            "general skills": {},
+            "combat skills": {},
+            "intellect skills": {},
+            "social skills": {},
+        }
         self.arsenal = arsenal if arsenal is not None else []
         self.downtime_activity = downtime_activity
 
+    def __repr__(self) -> str:
+        return (
+            f"Background(name='{self.name}', skill_improvements={self.skill_improvements}, "
+            f"arsenal={self.arsenal}, downtime_activity='{self.downtime_activity}')"
+        )
 
-academic = Background("Academic", [], [], "")
+    def __str__(self) -> str:
+        return (
+            f"Background: {self.name}\n"
+            f"Skill Improvements: {self.skill_improvements}\n"
+            f"Arsenal: {self.arsenal}\n"
+            f"Downtime Activity: {self.downtime_activity}"
+        )
+
+
+academic = Background(
+    name="Academic",
+    skill_improvements={
+        "general skills": {
+            "novice": 1,
+        },
+        "combat skills": {
+            "novice": 1,
+        },
+        "intellect skills": {
+            "novice": 1,
+            "trained": 3,
+        },
+        "social skills": {
+            "novice": 2,
+            "trained": 2,
+        },
+    },
+    arsenal=[
+        "A cudgel or dagger",
+    ],
+    downtime_activity="Research (Academic): You scour your books, local libraries and temples for any scrap of useful lore. Gain an additional Grit.",
+)
+
+aristocrat = Background(
+    name="Aristocrat",
+    skill_improvements={
+        "choice": {
+            "novice": 5,
+            "trained": 5,
+        },
+    },
+    arsenal=[
+        "Any set of light, medium or heavy armour",
+        "Any 2 scarce weapons of choice",
+    ],
+    downtime_activity=(
+        "Everything and Nothing (Aristocrat): You do whatever you fancy at the moment. "
+        "Roll a D6 and partake in another background activity (Combat Discipline, Ease-Up, Pray, Research, Scout Ahead, Found It)."
+    ),
+)
+
+clergy = Background(
+    name="Clergy",
+    skill_improvements={
+        "general skills": {
+            "novice": 1,
+            "trained": 2,
+        },
+        "combat skills": {
+            "novice": 1,
+        },
+        "intellect skills": {
+            "novice": 2,
+        },
+        "social skills": {
+            "novice": 1,
+            "trained": 2,
+        },
+        "intellect or combat skills": {
+            "trained": 1,
+        },
+    },
+    arsenal=[
+        "Any set of light or medium armour",
+        "A common melee weapon",
+    ],
+    downtime_activity="Pray (Clergy): You ask the gods to watch over you and to grant you their blessing. Gain an additional luck die (Can bring you above your maximum).",
+)
+
+commoner = Background(
+    name="Commoner",
+    skill_improvements={
+        "general skills": {
+            "novice": 2,
+            "trained": 3,
+        },
+        "combat skills": {
+            "novice": 1,
+        },
+        "intellect skills": {
+            "novice": 1,
+        },
+        "social skills": {
+            "novice": 1,
+            "trained": 2,
+        },
+    },
+    arsenal=[
+        "Any set of light armour",
+        "2 plentiful weapons or a common weapon",
+    ],
+    downtime_activity="Ease-Up (Commoner): You enjoy your time-off like there’s no tomorrow. Recover D6 wounds.",
+)
+
+criminal = Background(
+    name="Criminal",
+    skill_improvements={
+        "general skills": {
+            "novice": 2,
+            "trained": 2,
+        },
+        "combat skills": {
+            "novice": 2,
+            "trained": 1,
+        },
+        "social or intellect skills": {
+            "novice": 1,
+        },
+        "social skills": {
+            "trained": 2,
+        },
+    },
+    arsenal=[
+        "Leather jerkins or thick furs",
+        "A plentiful and a common brawling or small arms weapon",
+    ],
+    downtime_activity=(
+        "Found It (Criminal): You hustle up something extra with less than savory activities. "
+        "Acquire an additional rumour or piece of gear of your choice for free with relevant test (GM’s discretion, "
+        "but the scarcer the item, harder the test). On failure, suffer relevant consequence."
+    ),
+)
+
+fighter = Background(
+    name="Fighter",
+    skill_improvements={
+        "general skills": {
+            "novice": 2,
+            "trained": 2,
+        },
+        "combat skills": {
+            "novice": 1,
+            "trained": 3,
+        },
+        "social skills": {
+            "novice": 2,
+        },
+    },
+    arsenal=[
+        "Any set of medium armour",
+        "A scarce weapon and common weapon",
+    ],
+    downtime_activity="Combat Discipline (Fighter): You steel yourself for the next conflict. Recover D4 resolve.",
+)
+
+outlander = Background(
+    name="Outlander",
+    skill_improvements={
+        "general skills": {
+            "novice": 2,
+            "trained": 3,
+        },
+        "combat skills": {
+            "novice": 1,
+            "trained": 2,
+        },
+        "intellect skills": {
+            "novice": 1,
+        },
+        "social skills": {
+            "novice": 1,
+        },
+    },
+    arsenal=[
+        "Thick furs",
+        "A plentiful and a common archery or brawling weapon",
+    ],
+    downtime_activity="Scout Ahead (Outlander): You prepare for your travels. At the end of downtime, improve supply die by 1.",
+)
+roguish_tricks = {
+        "Backstabber": "If you target an opponent with a stealth strike, whether you succeed or not, they suffer damage (Ignoring AB) equal to your rank.",
+        "Contortionist": "Add your rank to any test to resist or end the grappled and prone condition.",
+        "Critical Opportunity": "When you press as a critical manoeuvre, add your rank to your next test in the round in addition to advantage. ",
+        "Evasive": "Ranged strikes targeting you suffer -your rank to hit.",
+        "Light Step": "Subtract your rank from any wounds lost by collision or falling.",
+        "Poisoner": "At the start of each encounter, you start with your rank’s worth of supply cost of poisons (See crafting chapter).",
+        "Quick Reflexes": "At the start of the round, spend an action to increase your Initiative by your rank until the start of the next round.",
+        "Scoundrels Luck": """Per encounter, you can re-roll a number of dice equal to your rank, but must accept the second result (No additional luck or resolve!). 
+        If your re-roll is a 1, you count as critically failing and you can no longer use this ability until the start of your next encounter. 
+        A critical failure means the opponent critical succeeds against you or something terrible happens to you in additional to failing (GMs discretion): 
+        Your weapon breaks, you suffer an injury, you fall prone, etc…,""",
+        "Silver-Tongued": "Add your rank to haggle and insight tests.",
+        "Thief": "Add your rank to acrobatics and skullduggery tests."
+    }
+class Profession:
+    def __init__(self, name, ability):
+        self.name = name
+        self.ability = ability
+
+
+class Archetype:
+    def __init__(self, name, profession, ability):
+        self.name = name
+        self.profession = profession
+        self.ability = ability
+alchemist = Profession("Alchemist", "Perfected Craft:\nAdd your rank to tinkering tests and at the start of each encounter you start with double your rank's worth of supply cost of the following items:\nBombardier: You start with double your rank worth of engineer devices(Weapons, bombs, upgrades and gadgets.\nElixerist: You start with double your rank worth of alchemical concoctions.")
+bombardier = Archetype("Bombardier", alchemist, "Blackpowder Savant: When you strike with a blackpowder or engineering device, add your rank to the damage. In addition, regardless of background, you start with a rifle or pistol.")
+elixirist = Archetype("Elixerist", alchemist, "Improved Concoctions: Add your rank to any test required to use or apply alchemical concoctions (GM’s discretion).")
+rogue = Profession("Rogue", f"Rogueish Tricks:\n Choose a number of tricks equal to your rank(Maximum of 5, gain one when you rank up).{roguish_tricks}")
+charlatan = Archetype("Charlatan", rogue, "Distracting Exploit: In combat, you can use the Exploit (1) reaction against a visible opponent: The next test or instance of damage against them in the round gains your rank or the next instance of damage they deal is lowered by your rank  (You choose).\nThe same target cannot be targeted more than once in the same round (Unless they are really gullible!). ")
+cutpurse = Archetype("Cutpurse", rogue, "Opportunist: Add your rank to any test for executing manoeuvres.")
+cutthroat = Archetype("Cutthroat", rogue, "Gutter-Cutter: If you strike an opponent with a stealth strike or that is suffering from a condition, you add your rank to hit and to the damage.")
+
+
+
+
+
+#background_objs = [academic, aristocrat, clergy, commoner, criminal, fighter, outlander]
+background_instances = {
+    "academic": academic,
+    "aristocrat": aristocrat,
+    "clergy": clergy,
+    "commoner": commoner,
+    "criminal": criminal,
+    "fighter": fighter,
+    "outlander": outlander,
+}
 
 clever = Ancestry(
     ancestries["clever"]["name"],
